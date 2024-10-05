@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+    <mat-form-field>
+        <mat-label>Net Amount</mat-label>
+        <input matInput formControlName="netAmount" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Gross Amount</mat-label>
+        <input matInput formControlName="grossAmount" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>VAT Amount</mat-label>
+        <input matInput formControlName="vatAmount" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>VAT Rate</mat-label>
+        <mat-select formControlName="vatRate">
+        <mat-option *ngFor="let rate of vatRates" [value]="rate">{{ rate }}%</mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
+<div *ngIf="error$ | async as error" class="error">
+    {{ error }}
+  </div>
