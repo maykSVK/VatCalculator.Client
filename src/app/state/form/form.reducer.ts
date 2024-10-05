@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 import { formNetAmountChanged, formGrossAmountChanged, formVatAmountChanged, formVatRateChanged, calculationSuccess, calculationFailure } from './form.actions';
-import { AmountType } from '../../models/calculation-request.model';
 import { CalculationResponse } from '../../models/calculation-response.model';
 
 export interface FormState {
@@ -8,7 +7,7 @@ export interface FormState {
   grossAmount: number | null;
   vatAmount: number | null;
   vatRate: number;  
-  error: any;
+  error: unknown;
 }
 
 export const initialState: FormState = {
@@ -26,24 +25,28 @@ export const formReducer = createReducer(
     on(formNetAmountChanged, (state, { netAmount }) => ({
         ...state,
         netAmount,
+        error: null,
     })),
   
     // Handle Gross Amount Change
     on(formGrossAmountChanged, (state, { grossAmount }) => ({
         ...state,
         grossAmount,
+        error: null,
     })),
   
     // Handle VAT Amount Change
     on(formVatAmountChanged, (state, { vatAmount }) => ({
         ...state,
         vatAmount,
+        error: null,
     })),
   
     // Handle VAT Rate Change
     on(formVatRateChanged, (state, { vatRate }) => ({
         ...state,
         vatRate,
+        error: null,
     })),
 
     // Handle calculation success and update all amounts
@@ -51,12 +54,13 @@ export const formReducer = createReducer(
         ...state,
         netAmount: response.netAmount,
         grossAmount: response.grossAmount,
-        vatAmount: response.vatAmount
+        vatAmount: response.vatAmount,
+        error: null,
       })),
 
     // Handle calculation success and update all amounts
-    on(calculationFailure, (state, { error }: { error: any }) => ({
+    on(calculationFailure, (state, { error }: { error: unknown }) => ({
         ...state,
         error: error,
     })),
-  );
+);

@@ -26,7 +26,11 @@
     "@angular-devkit/build-angular": "^18.1.0",
     "@angular/cli": "^18.1.0",
     "@angular/compiler-cli": "^18.1.0",
+    "@eslint/js": "^9.12.0",
     "@ngrx/store-devtools": "18.0.2",
-    "typescript": "~5.5.0"
+    "eslint": "^9.12.0",
+    "globals": "^15.10.0",
+    "typescript": "~5.5.0",
+    "typescript-eslint": "^8.8.0"
   }
 }

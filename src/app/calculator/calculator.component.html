@@ -1,27 +1,51 @@
-<form [formGroup]="form">
-    <mat-form-field>
-        <mat-label>Net Amount</mat-label>
-        <input matInput formControlName="netAmount" type="number">
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>Gross Amount</mat-label>
-        <input matInput formControlName="grossAmount" type="number">
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>VAT Amount</mat-label>
-        <input matInput formControlName="vatAmount" type="number">
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>VAT Rate</mat-label>
-        <mat-select formControlName="vatRate">
-        <mat-option *ngFor="let rate of vatRates" [value]="rate">{{ rate }}%</mat-option>
-        </mat-select>
-    </mat-form-field>
-</form>
-
-<div *ngIf="error$ | async as error" class="error">
-    {{ error }}
-  </div>
+<div class="vat-calculator-container">
+    <mat-card class="vat-card">
+      <mat-card-header>
+        <mat-card-title class="vat-title">VAT Calculator</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <form [formGroup]="form">
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Net Amount</mat-label>
+              <input matInput formControlName="netAmount" type="number" placeholder="Enter net amount">
+            </mat-form-field>
+          </div>
+  
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Gross Amount</mat-label>
+              <input matInput formControlName="grossAmount" type="number" placeholder="Enter gross amount">
+            </mat-form-field>
+          </div>
+  
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>VAT Amount</mat-label>
+              <input matInput formControlName="vatAmount" type="number" placeholder="Enter VAT amount">
+            </mat-form-field>
+          </div>
+  
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>VAT Rate</mat-label>
+              <mat-select formControlName="vatRate">
+                <mat-option *ngFor="let rate of vatRates" [value]="rate">
+                  {{ rate }}%
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-card *ngIf="error$ | async as error" class="error-card">
+      <mat-card-content class="error-content">
+        <mat-icon class="error-icon">error</mat-icon>
+        <span class="error-text">{{ error }}</span>
+      </mat-card-content>
+    </mat-card>
+</div>
+  
