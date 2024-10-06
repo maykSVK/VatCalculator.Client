@@ -38,3 +38,6 @@ This repository contains the client-side code for the VAT Calculator web applica
 - Enter either the Net, Gross, or VAT amount, and select a valid Austrian VAT rate (10%, 13%, or 20%).
 - The other values will be automatically calculated and displayed.
 - Error messages will be shown if inputs are missing, invalid, or more than one input is provided.
+
+## Author
+- [Michal Matloň](https://matlon.sk)
