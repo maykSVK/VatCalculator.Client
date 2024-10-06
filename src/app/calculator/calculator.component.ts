@@ -20,14 +20,14 @@ import { MatIconModule } from '@angular/material/icon';
     styleUrl: 'calculator.component.css',
     templateUrl: 'calculator.component.html',
     imports: [
-      AsyncPipe,   
-      ReactiveFormsModule,
-      CommonModule,
-      MatButtonModule,
-      MatInputModule,
-      MatSelectModule,    
-      MatCardModule,
-      MatIconModule,
+        AsyncPipe,   
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        MatInputModule,
+        MatSelectModule,    
+        MatCardModule,
+        MatIconModule,
     ],
   })
   export class CalculatorComponent implements OnInit {
@@ -54,75 +54,75 @@ import { MatIconModule } from '@angular/material/icon';
      * @param fb Injecting FormBuilder service to help create reactive forms.
      */
     constructor(private store: Store<FormState>, private fb: FormBuilder) {
-      this.netAmount$ = this.store.select(selectNetAmount);
-      this.grossAmount$ = this.store.select(selectGrossAmount);
-      this.vatAmount$ = this.store.select(selectVatAmount);
-      this.error$ = this.store.select(selectError);
+        this.netAmount$ = this.store.select(selectNetAmount);
+        this.grossAmount$ = this.store.select(selectGrossAmount);
+        this.vatAmount$ = this.store.select(selectVatAmount);
+        this.error$ = this.store.select(selectError);
     }
 
     /**
      * Lifecycle hook that is called once the component has been initialized
      */
     public ngOnInit() {
-      this.form = this.fb.group({
-        netAmount: [null],
-        grossAmount: [null],
-        vatAmount: [null],
-        vatRate: [this.vatRates[0], Validators.required]
-      });
+        this.form = this.fb.group({
+            netAmount: [null],
+            grossAmount: [null],
+            vatAmount: [null],
+            vatRate: [this.vatRates[0], Validators.required]
+        });
 
-      // Listen to individual form controls and dispatch actions accordingly
-      this.form.get('netAmount')!.valueChanges
-      .pipe(
-        debounceTime(300)
-      )
-      .subscribe((value) => {
-        this.lastAmountType = AmountType.Net;
-        this.lastAmountValue = value;
-        this.store.dispatch(formNetAmountChanged({ netAmount: value, vatRate: this.form.get('vatRate')!.value }));
-      });
+        // Listen to individual form controls and dispatch actions accordingly
+        this.form.get('netAmount')!.valueChanges
+        .pipe(
+            debounceTime(300)
+        )
+        .subscribe((value) => {
+            this.lastAmountType = AmountType.Net;
+            this.lastAmountValue = value;
+            this.store.dispatch(formNetAmountChanged({ netAmount: value, vatRate: this.form.get('vatRate')!.value }));
+        });
 
-      this.form.get('grossAmount')!.valueChanges
-      .pipe(
-        debounceTime(300)
-      )
-      .subscribe((value) => {
-        this.lastAmountType = AmountType.Gross;
-        this.lastAmountValue = value;
-        this.store.dispatch(formGrossAmountChanged({ grossAmount: value, vatRate:  this.form.get('vatRate')!.value }));
-      });
+        this.form.get('grossAmount')!.valueChanges
+        .pipe(
+            debounceTime(300)
+        )
+        .subscribe((value) => {
+            this.lastAmountType = AmountType.Gross;
+            this.lastAmountValue = value;
+            this.store.dispatch(formGrossAmountChanged({ grossAmount: value, vatRate:  this.form.get('vatRate')!.value }));
+        });
 
-      this.form.get('vatAmount')!.valueChanges
-      .pipe(
-        debounceTime(300)
-      )
-      .subscribe((value) => {
-        this.lastAmountType = AmountType.Vat;
-        this.lastAmountValue = value;
-        this.store.dispatch(formVatAmountChanged({ vatAmount: value, vatRate:  this.form.get('vatRate')!.value }));
-      });
+        this.form.get('vatAmount')!.valueChanges
+        .pipe(
+            debounceTime(300)
+        )
+        .subscribe((value) => {
+            this.lastAmountType = AmountType.Vat;
+            this.lastAmountValue = value;
+            this.store.dispatch(formVatAmountChanged({ vatAmount: value, vatRate:  this.form.get('vatRate')!.value }));
+        });
 
-      this.form.get('vatRate')!.valueChanges.subscribe((value) => {
-        this.store.dispatch(formVatRateChanged({ vatRate: value, lastAmountType: this.lastAmountType, lastAmountValue: this.lastAmountValue }));
-      });
+        this.form.get('vatRate')!.valueChanges.subscribe((value) => {
+            this.store.dispatch(formVatRateChanged({ vatRate: value, lastAmountType: this.lastAmountType, lastAmountValue: this.lastAmountValue }));
+        });
 
-      // Subscribe to store and update the form values when the state changes
-      this.netAmount$.subscribe((netAmount) => {
-        if (netAmount !== null) {
-          this.form.get('netAmount')!.setValue(netAmount, { emitEvent: false });
-        }
-      });
+        // Subscribe to store and update the form values when the state changes
+        this.netAmount$.subscribe((netAmount) => {
+            if (netAmount !== null) {
+            this.form.get('netAmount')!.setValue(netAmount, { emitEvent: false });
+            }
+        });
 
-      this.grossAmount$.subscribe((grossAmount) => {
-        if (grossAmount !== null) {
-          this.form.get('grossAmount')!.setValue(grossAmount, { emitEvent: false });
-        }
-      });
+        this.grossAmount$.subscribe((grossAmount) => {
+            if (grossAmount !== null) {
+            this.form.get('grossAmount')!.setValue(grossAmount, { emitEvent: false });
+            }
+        });
 
-      this.vatAmount$.subscribe((vatAmount) => {
-        if (vatAmount !== null) {
-          this.form.get('vatAmount')!.setValue(vatAmount, { emitEvent: false });
-        }
-      });
+        this.vatAmount$.subscribe((vatAmount) => {
+            if (vatAmount !== null) {
+            this.form.get('vatAmount')!.setValue(vatAmount, { emitEvent: false });
+            }
+        });
     }
-  }
+}
