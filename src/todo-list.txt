@@ -1,0 +1,3 @@
+If this were a product intended for release, I would take the following steps:
+- Perform component testing.
+- Upgrade vulnerable libraries.
