@@ -14,6 +14,14 @@ import { selectNetAmount, selectGrossAmount, selectVatAmount, selectError } from
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
+/**
+ * Type for handling form value changes.
+ * 
+ * @param amount - The value of the form control that changed.
+ * @param vatRate - The current VAT rate selected in the form.
+ */
+type FormValueChangeHandler = (amount: number | null, vatRate: number ) => void;
+
 @Component({
     selector: 'app-calculator',
     standalone: true,
@@ -72,35 +80,17 @@ import { MatIconModule } from '@angular/material/icon';
         });
 
         // Listen to individual form controls and dispatch actions accordingly
-        this.form.get('netAmount')!.valueChanges
-        .pipe(
-            debounceTime(300)
-        )
-        .subscribe((value) => {
-            this.lastAmountType = AmountType.Net;
-            this.lastAmountValue = value;
-            this.store.dispatch(formNetAmountChanged({ netAmount: value, vatRate: this.form.get('vatRate')!.value }));
-        });
-
-        this.form.get('grossAmount')!.valueChanges
-        .pipe(
-            debounceTime(300)
-        )
-        .subscribe((value) => {
-            this.lastAmountType = AmountType.Gross;
-            this.lastAmountValue = value;
-            this.store.dispatch(formGrossAmountChanged({ grossAmount: value, vatRate:  this.form.get('vatRate')!.value }));
-        });
-
-        this.form.get('vatAmount')!.valueChanges
-        .pipe(
-            debounceTime(300)
-        )
-        .subscribe((value) => {
-            this.lastAmountType = AmountType.Vat;
-            this.lastAmountValue = value;
-            this.store.dispatch(formVatAmountChanged({ vatAmount: value, vatRate:  this.form.get('vatRate')!.value }));
-        });
+        this.setupFormValueChanges('netAmount', (netAmount, vatRate) => {
+            this.store.dispatch(formNetAmountChanged({ netAmount, vatRate }));
+        }, AmountType.Net);
+        
+        this.setupFormValueChanges('grossAmount', (grossAmount, vatRate) => {
+            this.store.dispatch(formGrossAmountChanged({ grossAmount, vatRate }));
+        }, AmountType.Gross);
+        
+        this.setupFormValueChanges('vatAmount', (vatAmount, vatRate) => {
+            this.store.dispatch(formVatAmountChanged({ vatAmount, vatRate }));
+        }, AmountType.Vat);
 
         this.form.get('vatRate')!.valueChanges.subscribe((value) => {
             this.store.dispatch(formVatRateChanged({ vatRate: value, lastAmountType: this.lastAmountType, lastAmountValue: this.lastAmountValue }));
@@ -123,6 +113,23 @@ import { MatIconModule } from '@angular/material/icon';
             if (vatAmount !== null) {
             this.form.get('vatAmount')!.setValue(vatAmount, { emitEvent: false });
             }
+        });
+    }
+
+    /**
+     * Subscribes to changes in a specific form control, debounces the input.
+     *
+     * @param formControlName - The name of the form control to listen for changes (e.g., 'netAmount', 'grossAmount').
+     * @param handler - The function to call when the form control value changes.
+     * @param amountType - The type of the amount (Net, Gross, VAT) that the form control corresponds to.
+     */
+    private setupFormValueChanges(formControlName: string, handler: FormValueChangeHandler, amountType: AmountType) {
+        this.form.get(formControlName)!.valueChanges
+        .pipe(debounceTime(300))
+        .subscribe((value) => {
+            this.lastAmountType = amountType;
+            this.lastAmountValue = value;
+            handler(value, this.form.get('vatRate')!.value);
         });
     }
 }
