@@ -1,4 +1,4 @@
 If this were a product intended for release, I would take the following steps:
 - Perform component testing.
-- Automated UI teting using Playwright or Selenium.
+- Automated UI testing using Playwright or Selenium.
 - Upgrade vulnerable libraries.
